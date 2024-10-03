@@ -32,10 +32,10 @@ void StateInterface::set_state(const_fri_state_t_ref state) {
   state_.time_stamp_nano_sec = state.getTimestampNanoSec();
   state_.time_stamp_sec = state.getTimestampSec();
   state_.tracking_performance = state.getTrackingPerformance();
-  // [TODO] New functionalities
-  state_.boolean_io_value = state.getBooleanIOValue();
-  state_.digital_io_value = state.getDigitalIOValue();
-  state_.analog_io_value = state.getAnalogIOValue();
+  // IO functionalities
+  // state_.measured_boolean_io_value = state.getBooleanIOValue();
+  state_.measured_digital_io_value = state.getDigitalIOValue();
+  // state_.measured_analog_io_value = state.getAnalogIOValue();
 
   if (!external_torque_filter_.is_initialized() || !measured_torque_filter_.is_initialized()) {
     // initialize once state_ is available
@@ -74,9 +74,9 @@ void StateInterface::set_state_open_loop(const_fri_state_t_ref state,
   state_.time_stamp_sec = state.getTimestampSec();
   state_.tracking_performance = state.getTrackingPerformance();
   // IO functionalities
-  state_.boolean_io_value = state.getBooleanIOValue();
+  // state_.measured_boolean_io_value = state.getBooleanIOValue();
   state_.digital_io_value = state.getDigitalIOValue();
-  state_.analog_io_value = state.getAnalogIOValue();
+  // state_.measured_analog_io_value = state.getAnalogIOValue();
 
   if (!external_torque_filter_.is_initialized() || !measured_torque_filter_.is_initialized()) {
     // initialize once state_ is available

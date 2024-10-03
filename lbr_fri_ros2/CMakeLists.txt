@@ -30,6 +30,8 @@ add_library(lbr_fri_ros2
     src/interfaces/state.cpp
     src/interfaces/torque_command.cpp
     src/interfaces/wrench_command.cpp
+    src/interfaces/io_command.cpp
+    src/interfaces/digital_io_command.cpp
     src/app.cpp
     src/async_client.cpp
     src/command_guard.cpp
@@ -96,6 +98,9 @@ if(BUILD_TESTING)
 
   # add_executable(test_wrench_command test/test_wrench_command.cpp)
   # target_link_libraries(test_wrench_command lbr_fri_ros2)
+
+  add_executable(test_digital_io_command test/test_digital_io_command.cpp)
+  target_link_libraries(test_digital_io_command lbr_fri_ros2)
 endif()
 
 ament_package()

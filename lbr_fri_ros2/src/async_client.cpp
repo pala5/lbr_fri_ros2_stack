@@ -48,6 +48,10 @@ AsyncClient::AsyncClient(const KUKA::FRI::EClientCommandMode &client_command_mod
   // create state interface
   state_interface_ptr_ = std::make_shared<StateInterface>(state_interface_parameters);
   state_interface_ptr_->log_info();
+  
+  // create io command interface
+  io_command_interface_ptr_ = std::make_shared<IOCommandInterface>();
+  
   RCLCPP_INFO_STREAM(rclcpp::get_logger(LOGGER_NAME),
                      "Open loop '" << (open_loop_ ? "true" : "false") << "'");
   RCLCPP_INFO_STREAM(rclcpp::get_logger(LOGGER_NAME),
@@ -67,6 +71,7 @@ void AsyncClient::onStateChange(KUKA::FRI::ESessionState old_state,
   // initialize command
   state_interface_ptr_->set_state(robotState());
   command_interface_ptr_->init_command(state_interface_ptr_->get_state());
+  io_command_interface_ptr_->init_command();
 }
 
 void AsyncClient::monitor() { state_interface_ptr_->set_state(robotState()); };
@@ -77,6 +82,8 @@ void AsyncClient::waitForCommand() {
   command_interface_ptr_->init_command(state_interface_ptr_->get_state());
   command_interface_ptr_->buffered_command_to_fri(robotCommand(),
                                                   state_interface_ptr_->get_state());
+  // io_command_interface_ptr_->init_command();
+  io_command_interface_ptr_->buffered_command_to_fri(robotCommand());                          
 }
 
 void AsyncClient::command() {
@@ -90,5 +97,6 @@ void AsyncClient::command() {
       robotCommand(),
       state_interface_ptr_->get_state()); // current state accessed via state interface (allows for
                                           // open loop and is statically sized)
+  io_command_interface_ptr_->buffered_command_to_fri(robotCommand());                          
 }
 } // namespace lbr_fri_ros2

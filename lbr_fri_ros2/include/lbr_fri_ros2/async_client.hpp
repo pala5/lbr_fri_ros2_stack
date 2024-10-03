@@ -18,6 +18,8 @@
 #include "lbr_fri_ros2/interfaces/state.hpp"
 #include "lbr_fri_ros2/interfaces/torque_command.hpp"
 #include "lbr_fri_ros2/interfaces/wrench_command.hpp"
+#include "lbr_fri_ros2/interfaces/io_command.hpp"
+#include "lbr_fri_ros2/interfaces/digital_io_command.hpp"
 
 namespace lbr_fri_ros2 {
 class AsyncClient : public KUKA::FRI::LBRClient {
@@ -37,6 +39,9 @@ public:
     return command_interface_ptr_;
   }
   inline std::shared_ptr<StateInterface> get_state_interface() { return state_interface_ptr_; }
+  inline std::shared_ptr<IOCommandInterface> get_io_command_interface() { 
+    return io_command_interface_ptr_; 
+  }
 
   void onStateChange(KUKA::FRI::ESessionState old_state,
                      KUKA::FRI::ESessionState new_state) override;
@@ -47,6 +52,7 @@ public:
 protected:
   std::shared_ptr<BaseCommandInterface> command_interface_ptr_;
   std::shared_ptr<StateInterface> state_interface_ptr_;
+  std::shared_ptr<IOCommandInterface> io_command_interface_ptr_;
 
   bool open_loop_;
 };
